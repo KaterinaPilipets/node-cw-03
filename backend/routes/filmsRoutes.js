@@ -1,10 +1,16 @@
 // Cannot GET /api/v1/films
 const filmsController = require("../controllers/FilmsController");
 const filmsRouter = require("express").Router();
-
+const rolesMidleware = require("../midlewares/rolesMidleware");
 // Get all films
-filmsRouter.get("/films", filmsController.getAll);
+filmsRouter.get(
+  "/films",
+  rolesMidleware(["SEO", "MODERATOR", "ADMIN"]),
+  // ["ADMIN","MODERATOR","SEO","USER"]
+  filmsController.getAll
+);
 // Add film
+
 filmsRouter.post(
   "/films",
   (req, res, next) => {
